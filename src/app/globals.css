@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+:root {
+  --background: #faf8f5;
+  --foreground: #1a1614;
+  --muted-foreground: #6b5e54;
+  --card: #ffffff;
+  --gold: #b8860b;
+  --bronze: #cd7f32;
+  --border: rgba(205, 127, 50, 0.2);
+}
+
+.dark {
+  --background: #0f0e0d;
+  --foreground: #f5f0eb;
+  --muted-foreground: #a89b91;
+  --card: #1a1817;
+  --gold: #d4a843;
+  --bronze: #e0944a;
+  --border: rgba(212, 168, 67, 0.2);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
+  --color-gold: var(--gold);
+  --color-bronze: var(--bronze);
+  --color-border: var(--border);
+  --font-cormorant: var(--font-cormorant-garamond);
+  --font-garamond: var(--font-eb-garamond);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-eb-garamond), Georgia, "Times New Roman", serif;
+}
+
+/* Warm shadow utilities */
+.warm-shadow {
+  box-shadow: 0 2px 8px rgba(184, 134, 11, 0.08),
+    0 1px 3px rgba(184, 134, 11, 0.06);
+}
+
+.warm-shadow-lg {
+  box-shadow: 0 4px 16px rgba(184, 134, 11, 0.12),
+    0 2px 6px rgba(184, 134, 11, 0.08);
+}
+
+/* Illuminated link style (gold underline on hover) */
+.illuminated-link {
+  text-decoration: none;
+  background-image: linear-gradient(var(--gold), var(--gold));
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.3s ease;
+}
+
+.illuminated-link:hover {
+  background-size: 100% 1px;
+}
