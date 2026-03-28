@@ -30,6 +30,9 @@
   --color-border: var(--border);
   --font-cormorant: var(--font-cormorant-garamond);
   --font-garamond: var(--font-eb-garamond);
+  --animate-whirl-slow: whirl 30s linear infinite;
+  --animate-whirl-medium: whirl 20s linear infinite reverse;
+  --animate-whirl-fast: whirl 12s linear infinite;
 }
 
 body {
@@ -61,4 +64,14 @@ body {
 
 .illuminated-link:hover {
   background-size: 100% 1px;
+}
+
+/* Orbit ring animations */
+@keyframes whirl {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
