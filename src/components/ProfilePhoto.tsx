@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 export default function ProfilePhoto() {
   return (
     <div className="group relative h-48 w-48 cursor-pointer">
@@ -107,12 +109,17 @@ export default function ProfilePhoto() {
         </svg>
       </div>
 
-      {/* Profile photo placeholder */}
+      {/* Profile photo */}
       <div className="relative flex h-full w-full items-center justify-center p-3">
-        <div className="flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-gold/20 to-bronze/20 warm-shadow-lg">
-          <span className="font-[family-name:var(--font-cormorant-garamond)] text-4xl font-semibold text-gold">
-            JL
-          </span>
+        <div className="h-full w-full overflow-hidden rounded-full warm-shadow-lg">
+          <Image
+            src="/images/profile.jpeg"
+            alt="Joshua Lowrance"
+            width={400}
+            height={400}
+            className="h-full w-full object-cover"
+            priority
+          />
         </div>
       </div>
     </div>
