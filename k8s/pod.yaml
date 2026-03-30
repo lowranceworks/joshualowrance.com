@@ -1,0 +1,37 @@
+# Pod spec for local testing with `podman play kube`
+#
+# Usage:
+#   podman build -f Containerfile -t localhost/joshualowrance.com:latest .
+#   podman play kube k8s/pod.yaml
+#
+# Teardown:
+#   podman play kube --down k8s/pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: joshualowrance-com
+  labels:
+    app: joshualowrance-com
+spec:
+  containers:
+    - name: web
+      image: localhost/joshualowrance.com:latest
+      ports:
+        - containerPort: 3000
+          hostPort: 3000
+      resources:
+        limits:
+          memory: "256Mi"
+          cpu: "500m"
+      readinessProbe:
+        httpGet:
+          path: /
+          port: 3000
+        initialDelaySeconds: 5
+        periodSeconds: 5
+      livenessProbe:
+        httpGet:
+          path: /
+          port: 3000
+        initialDelaySeconds: 10
+        periodSeconds: 10

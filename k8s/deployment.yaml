@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: joshualowrance-com
+  labels:
+    app: joshualowrance-com
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: joshualowrance-com
+  template:
+    metadata:
+      labels:
+        app: joshualowrance-com
+    spec:
+      containers:
+        - name: web
+          image: ghcr.io/lowranceworks/joshualowrance.com:latest
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 10
