@@ -2,11 +2,23 @@ interface AboutSectionProps {
   mode: "professional" | "personal";
 }
 
-const content = {
-  professional:
-    "DevOps Engineer. Building reliable systems and automating everything.",
-  personal: "Exploring ideas, one project at a time.",
-};
+function ProfessionalAbout() {
+  return (
+    <p className="font-garamond text-xl leading-loose text-foreground">
+      DevOps Engineer building on Kubernetes, GitOps, and Google Cloud. I make
+      infrastructure declarative, deployments boring, and systems that hold up
+      when things go wrong.
+    </p>
+  );
+}
+
+function PersonalAbout() {
+  return (
+    <p className="font-garamond text-xl leading-loose text-foreground">
+      Husband. Father. Advocate for human flourishing and prosperity.
+    </p>
+  );
+}
 
 export default function AboutSection({ mode }: AboutSectionProps) {
   return (
@@ -17,9 +29,7 @@ export default function AboutSection({ mode }: AboutSectionProps) {
         </h2>
       </div>
       <div className="md:w-2/3">
-        <p className="font-garamond text-xl leading-loose text-foreground">
-          {content[mode]}
-        </p>
+        {mode === "professional" ? <ProfessionalAbout /> : <PersonalAbout />}
       </div>
     </section>
   );
