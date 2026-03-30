@@ -82,7 +82,7 @@ export default function ProfilePhoto() {
               alt="Joshua Lowrance"
               width={400}
               height={400}
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover object-top"
               priority
             />
           </div>
