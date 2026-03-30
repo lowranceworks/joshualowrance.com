@@ -26,12 +26,12 @@ export default function PostsSection({ mode }: PostsSectionProps) {
           Posts
         </h2>
       </div>
-      <div className="flex flex-col gap-y-4 md:w-2/3">
+      <div className="flex flex-col gap-y-1 md:w-2/3">
         {posts.map((post) => (
           <Link
             key={post.slug}
             href={`/posts/${post.slug}`}
-            className="group flex flex-col gap-y-1"
+            className="post-card group flex flex-col gap-y-1"
           >
             <div className="flex items-baseline gap-x-2">
               <span className="illuminated-link font-garamond text-lg text-foreground">

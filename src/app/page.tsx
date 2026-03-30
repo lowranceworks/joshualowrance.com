@@ -15,20 +15,30 @@ export default async function Home({
   return (
     <div className="flex w-full flex-col gap-y-10">
       {/* Profile */}
-      <section className="flex flex-col items-center gap-y-4">
+      <section
+        className="animate-entrance flex flex-col items-center gap-y-4"
+      >
         <ProfilePhoto />
-        <h1 className="font-[family-name:var(--font-cormorant-garamond)] text-5xl font-semibold tracking-wide text-foreground">
+        <h1 className="breathe-glow font-[family-name:var(--font-cormorant-garamond)] text-5xl font-semibold tracking-wide text-foreground">
           Joshua Lowrance
         </h1>
       </section>
 
-      <Divider />
+      <div className="animate-entrance" style={{ animationDelay: "150ms" }}>
+        <Divider />
+      </div>
 
-      <AboutSection mode={mode} />
+      <div className="animate-entrance" style={{ animationDelay: "250ms" }}>
+        <AboutSection mode={mode} />
+      </div>
 
-      <Divider />
+      <div className="animate-entrance" style={{ animationDelay: "350ms" }}>
+        <Divider />
+      </div>
 
-      <PostsSection mode={mode} />
+      <div className="animate-entrance" style={{ animationDelay: "450ms" }}>
+        <PostsSection mode={mode} />
+      </div>
     </div>
   );
 }

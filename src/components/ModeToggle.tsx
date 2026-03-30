@@ -31,6 +31,13 @@ export default function ModeToggle() {
     );
   }, [mode]);
 
+  // Enable smooth theme transitions after initial mount (prevents flash on load)
+  useEffect(() => {
+    requestAnimationFrame(() => {
+      document.body.classList.add("theme-ready");
+    });
+  }, []);
+
   const toggle = useCallback(
     (newMode: Mode) => {
       setMode(newMode);
