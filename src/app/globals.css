@@ -43,6 +43,19 @@ body {
   font-family: var(--font-eb-garamond), Georgia, "Times New Roman", serif;
 }
 
+/* Coin-flip 3D animation */
+.coin-flip {
+  transform-style: preserve-3d;
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.coin-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+}
+
 /* Warm shadow utilities */
 .warm-shadow {
   box-shadow: 0 2px 8px rgba(184, 134, 11, 0.08),

@@ -32,6 +32,7 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${cormorant.variable} ${ebGaramond.variable}`}
+      suppressHydrationWarning
     >
       <body className="flex min-h-screen justify-center bg-background scroll-smooth">
         <script

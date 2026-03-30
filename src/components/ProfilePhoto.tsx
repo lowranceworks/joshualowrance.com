@@ -1,8 +1,30 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 export default function ProfilePhoto() {
+  const [flipped, setFlipped] = useState(false);
+  const [hasInitialized, setHasInitialized] = useState(false);
+
+  useEffect(() => {
+    // Set initial state without animation
+    const isCurrentlyDark =
+      document.documentElement.classList.contains("dark");
+    setFlipped(isCurrentlyDark);
+    // Allow transitions after first paint
+    requestAnimationFrame(() => setHasInitialized(true));
+  }, []);
+
+  useEffect(() => {
+    function onThemeChange(e: Event) {
+      const detail = (e as CustomEvent).detail;
+      setFlipped(detail.mode === "professional");
+    }
+    document.addEventListener("theme-change", onThemeChange);
+    return () => document.removeEventListener("theme-change", onThemeChange);
+  }, []);
+
   return (
     <div className="group relative h-48 w-48 cursor-pointer">
       {/* Animated orbit rings */}
@@ -31,25 +53,39 @@ export default function ProfilePhoto() {
         </svg>
       </div>
 
-      {/* Profile photos - swap based on mode */}
+      {/* Coin-flip photo container */}
       <div className="relative flex h-full w-full items-center justify-center p-3">
-        <div className="h-full w-full overflow-hidden rounded-full warm-shadow-lg">
-          <Image
-            src="/images/personal.jpeg"
-            alt="Joshua Lowrance"
-            width={400}
-            height={400}
-            className="block h-full w-full object-cover dark:hidden"
-            priority
-          />
-          <Image
-            src="/images/professional.jpeg"
-            alt="Joshua Lowrance"
-            width={400}
-            height={400}
-            className="hidden h-full w-full object-cover dark:block"
-            priority
-          />
+        <div
+          className="coin-flip relative h-full w-full"
+          style={{
+            transform: flipped ? "rotateY(-180deg)" : "rotateY(0deg)",
+            transitionDuration: hasInitialized ? "0.6s" : "0s",
+          }}
+        >
+          {/* Front face — personal */}
+          <div className="coin-face overflow-hidden rounded-full warm-shadow-lg">
+            <Image
+              src="/images/personal.jpeg"
+              alt="Joshua Lowrance"
+              width={400}
+              height={400}
+              className="h-full w-full object-cover"
+              priority
+            />
+          </div>
+          {/* Back face — professional */}
+          <div className="coin-face overflow-hidden rounded-full warm-shadow-lg"
+            style={{ transform: "rotateY(180deg)" }}
+          >
+            <Image
+              src="/images/professional.jpeg"
+              alt="Joshua Lowrance"
+              width={400}
+              height={400}
+              className="h-full w-full object-cover"
+              priority
+            />
+          </div>
         </div>
       </div>
     </div>
