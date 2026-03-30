@@ -48,18 +48,23 @@ export default function ModeToggle() {
 
   return (
     <div className="flex items-center gap-3">
-      {/* Left ornament */}
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        className="hidden text-gold/40 sm:block"
-      >
-        <circle cx="12" cy="12" r="8" stroke="currentColor" strokeWidth="1" />
-        <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="1" />
-        <circle cx="12" cy="12" r="2" fill="currentColor" />
-      </svg>
+      {/* Left ornament — animated */}
+      <div className="hidden h-6 w-6 sm:block">
+        <svg viewBox="0 0 24 24" fill="none" className="h-full w-full text-gold">
+          {/* Outer ring — slow spin */}
+          <g className="origin-center animate-whirl-slow">
+            <circle cx="12" cy="12" r="11" stroke="currentColor" strokeWidth="0.5" opacity="0.3" />
+            <path d="M 12 1 A 11 11 0 0 1 23 12" stroke="currentColor" strokeWidth="1" opacity="0.6" />
+          </g>
+          {/* Inner ring — medium, reverse */}
+          <g className="origin-center animate-whirl-medium">
+            <circle cx="12" cy="12" r="7" stroke="currentColor" strokeWidth="0.5" opacity="0.25" />
+            <path d="M 12 5 A 7 7 0 0 1 19 12" stroke="currentColor" strokeWidth="1" opacity="0.5" />
+          </g>
+          {/* Center dot */}
+          <circle cx="12" cy="12" r="2" fill="currentColor" opacity="0.7" />
+        </svg>
+      </div>
 
       {/* Toggle track */}
       <div
@@ -105,18 +110,23 @@ export default function ModeToggle() {
         </button>
       </div>
 
-      {/* Right ornament */}
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        className="hidden text-gold/40 sm:block"
-      >
-        <circle cx="12" cy="12" r="8" stroke="currentColor" strokeWidth="1" />
-        <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="1" />
-        <circle cx="12" cy="12" r="2" fill="currentColor" />
-      </svg>
+      {/* Right ornament — animated, opposite direction */}
+      <div className="hidden h-6 w-6 sm:block">
+        <svg viewBox="0 0 24 24" fill="none" className="h-full w-full text-gold">
+          {/* Outer ring — slow spin, reversed from left */}
+          <g className="origin-center animate-whirl-medium">
+            <circle cx="12" cy="12" r="11" stroke="currentColor" strokeWidth="0.5" opacity="0.3" />
+            <path d="M 12 23 A 11 11 0 0 1 1 12" stroke="currentColor" strokeWidth="1" opacity="0.6" />
+          </g>
+          {/* Inner ring — fast */}
+          <g className="origin-center animate-whirl-fast">
+            <circle cx="12" cy="12" r="7" stroke="currentColor" strokeWidth="0.5" opacity="0.25" />
+            <path d="M 19 12 A 7 7 0 0 1 12 19" stroke="currentColor" strokeWidth="1" opacity="0.5" />
+          </g>
+          {/* Center dot */}
+          <circle cx="12" cy="12" r="2" fill="currentColor" opacity="0.7" />
+        </svg>
+      </div>
     </div>
   );
 }
