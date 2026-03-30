@@ -4,7 +4,7 @@ interface AboutSectionProps {
 
 const content = {
   professional:
-    "Platform engineer & infrastructure enthusiast. Building reliable systems and automating everything.",
+    "DevOps Engineer. Building reliable systems and automating everything.",
   personal: "Exploring ideas, one project at a time.",
 };
 

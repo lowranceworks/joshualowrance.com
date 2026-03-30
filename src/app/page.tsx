@@ -1,8 +1,17 @@
 import ProfilePhoto from "@/components/ProfilePhoto";
 import AboutSection from "@/components/AboutSection";
+import PostsSection from "@/components/PostsSection";
 import Divider from "@/components/Divider";
+import type { Mode } from "@/lib/posts";
 
-export default function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ mode?: string }>;
+}) {
+  const { mode: modeParam } = await searchParams;
+  const mode: Mode = modeParam === "professional" ? "professional" : "personal";
+
   return (
     <div className="flex w-full flex-col gap-y-10">
       {/* Profile */}
@@ -15,7 +24,11 @@ export default function Home() {
 
       <Divider />
 
-      <AboutSection mode="personal" />
+      <AboutSection mode={mode} />
+
+      <Divider />
+
+      <PostsSection mode={mode} />
     </div>
   );
 }
