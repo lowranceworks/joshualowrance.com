@@ -38,7 +38,7 @@ jobs:
         run: |
           # Swap image tag to the just-built SHA
           sed "s|image:.*|image: ${{ env.IMAGE }}:${{ github.sha }}|" \
-            k8s/pod.yaml > /tmp/pod-test.yaml
+            test/pod.yaml > /tmp/pod-test.yaml
 
           podman play kube /tmp/pod-test.yaml
 
