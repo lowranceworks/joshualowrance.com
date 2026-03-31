@@ -48,13 +48,13 @@ podman build -f Containerfile -t localhost/joshualowrance.com:latest .
 Start the pod:
 
 ```sh
-podman play kube k8s/pod.yaml
+podman play kube test/pod.yaml
 ```
 
 Verify at `http://localhost:3000`, then tear down:
 
 ```sh
-podman play kube --down k8s/pod.yaml
+podman play kube --down test/pod.yaml
 ```
 
 ## CI/CD
@@ -68,10 +68,8 @@ podman play kube --down k8s/pod.yaml
 
 ```
 content/posts/       # Markdown blog posts
-k8s/                 # Kubernetes manifests
-  pod.yaml           # Local testing (podman play kube)
-  deployment.yaml    # Production deployment
-  service.yaml       # ClusterIP service
+test/
+  pod.yaml           # Smoke testing (podman play kube)
 src/
   app/               # Next.js App Router pages
   components/        # React components
