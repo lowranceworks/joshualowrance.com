@@ -1,10 +1,9 @@
 import ProfilePhoto from "@/components/ProfilePhoto";
 import AboutSection from "@/components/AboutSection";
-import PostsSection from "@/components/PostsSection";
-import ProjectsSection from "@/components/ProjectsSection";
-import NotesSection from "@/components/NotesSection";
+import FilteredContent from "@/components/FilteredContent";
 import Divider from "@/components/Divider";
-import type { Mode } from "@/lib/posts";
+import { getAllPosts, type Mode } from "@/lib/posts";
+import { getAllProjects, getAllNotes } from "@/lib/content";
 
 export default async function Home({
   searchParams,
@@ -34,33 +33,11 @@ export default async function Home({
         <AboutSection mode={mode} />
       </div>
 
-      <div className="animate-entrance" style={{ animationDelay: "350ms" }}>
-        <Divider />
-      </div>
-
-      <div className="animate-entrance" style={{ animationDelay: "450ms" }}>
-        <PostsSection mode={mode} />
-      </div>
-
-      {mode === "professional" && (
-        <>
-          <div className="animate-entrance" style={{ animationDelay: "550ms" }}>
-            <Divider />
-          </div>
-
-          <div className="animate-entrance" style={{ animationDelay: "650ms" }}>
-            <ProjectsSection />
-          </div>
-
-          <div className="animate-entrance" style={{ animationDelay: "750ms" }}>
-            <Divider />
-          </div>
-
-          <div className="animate-entrance" style={{ animationDelay: "850ms" }}>
-            <NotesSection />
-          </div>
-        </>
-      )}
+      <FilteredContent
+        posts={getAllPosts(mode)}
+        projects={mode === "professional" ? getAllProjects() : []}
+        notes={mode === "professional" ? getAllNotes() : []}
+      />
     </div>
   );
 }
