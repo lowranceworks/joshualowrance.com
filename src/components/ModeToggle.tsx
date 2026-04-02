@@ -12,13 +12,29 @@ export default function ModeToggle() {
   const [mode, setMode] = useState<Mode>("professional");
 
   useEffect(() => {
-    const urlMode = searchParams.get("mode");
-    // Sync React state from URL params after hydration (external system)
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setMode(urlMode === "personal" ? "personal" : "professional");
-  }, [searchParams]);
+    // On content pages (posts, projects, notes) the ModeHint component
+    // sets a data-content-mode attribute on <html> via an inline script
+    // that runs before React hydrates. This takes priority over the URL
+    // search param so the toggle always reflects the content's mode —
+    // even on a hard refresh where there's no ?mode= param.
+    const contentMode = document.documentElement.getAttribute("data-content-mode");
+    const isHome = pathname === "/";
+
+    if (isHome) {
+      // Navigated back to home — clear any leftover content mode hint
+      document.documentElement.removeAttribute("data-content-mode");
+      const urlMode = searchParams.get("mode");
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setMode(urlMode === "personal" ? "personal" : "professional");
+    } else if (contentMode === "personal" || contentMode === "professional") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setMode(contentMode);
+    }
+  }, [searchParams, pathname]);
 
   // Listen for mode hints from content pages (posts, etc.)
+  // This handles client-side navigations where the data attribute
+  // may be set after ModeToggle has already mounted.
   useEffect(() => {
     function onModeHint(e: Event) {
       const detail = (e as CustomEvent).detail;
