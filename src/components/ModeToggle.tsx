@@ -5,17 +5,17 @@ import { useSearchParams, useRouter } from "next/navigation";
 
 type Mode = "professional" | "personal";
 
+function modeFromParams(params: URLSearchParams): Mode {
+  const urlMode = params.get("mode");
+  return urlMode === "professional" || urlMode === "personal"
+    ? urlMode
+    : "personal";
+}
+
 export default function ModeToggle() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [mode, setMode] = useState<Mode>("personal");
-
-  useEffect(() => {
-    const urlMode = searchParams.get("mode");
-    if (urlMode === "professional" || urlMode === "personal") {
-      setMode(urlMode);
-    }
-  }, [searchParams]);
+  const [mode, setMode] = useState<Mode>(() => modeFromParams(searchParams));
 
   useEffect(() => {
     const root = document.documentElement;

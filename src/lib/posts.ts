@@ -50,7 +50,8 @@ export function getAllPosts(mode?: Mode): PostMeta[] {
     .filter((f) => f.endsWith(".md"));
 
   const posts = filenames.map((filename) => {
-    const { content: _, ...meta } = parsePost(filename);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { content, ...meta } = parsePost(filename);
     return meta;
   });
 

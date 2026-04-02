@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import Link from "next/link";
 import ModeToggle from "./ModeToggle";
 
 export default function Header() {
@@ -10,12 +11,12 @@ export default function Header() {
       >
         {/* Left */}
         <div className="z-10 flex flex-1 items-center justify-start pb-8">
-          <a
+          <Link
             href="/"
             className="font-[family-name:var(--font-cormorant-garamond)] text-[1.25rem] font-medium transition-colors hover:text-gold"
           >
             Home
-          </a>
+          </Link>
         </div>
 
         {/* Center */}

@@ -1,28 +1,27 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
+
+function subscribeToTheme(callback: () => void) {
+  document.addEventListener("theme-change", callback);
+  return () => document.removeEventListener("theme-change", callback);
+}
+
+function getFlipped() {
+  return document.documentElement.classList.contains("dark");
+}
+
+function getServerFlipped() {
+  return false;
+}
 
 export default function ProfilePhoto() {
-  const [flipped, setFlipped] = useState(false);
+  const flipped = useSyncExternalStore(subscribeToTheme, getFlipped, getServerFlipped);
   const [hasInitialized, setHasInitialized] = useState(false);
 
   useEffect(() => {
-    // Set initial state without animation
-    const isCurrentlyDark =
-      document.documentElement.classList.contains("dark");
-    setFlipped(isCurrentlyDark);
-    // Allow transitions after first paint
     requestAnimationFrame(() => setHasInitialized(true));
-  }, []);
-
-  useEffect(() => {
-    function onThemeChange(e: Event) {
-      const detail = (e as CustomEvent).detail;
-      setFlipped(detail.mode === "professional");
-    }
-    document.addEventListener("theme-change", onThemeChange);
-    return () => document.removeEventListener("theme-change", onThemeChange);
   }, []);
 
   return (
