@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import ModeToggle from "./ModeToggle";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Header() {
   return (
@@ -27,7 +28,9 @@ export default function Header() {
         </div>
 
         {/* Right */}
-        <div className="z-10 flex flex-1 flex-row items-center justify-end gap-x-6 pb-8 sm:gap-x-8" />
+        <div className="z-10 flex flex-1 flex-row items-center justify-end gap-x-6 pb-8 sm:gap-x-8">
+          <ThemeToggle />
+        </div>
       </nav>
     </header>
   );

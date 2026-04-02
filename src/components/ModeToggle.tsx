@@ -20,25 +20,10 @@ export default function ModeToggle() {
   }, [searchParams]);
 
   useEffect(() => {
-    const root = document.documentElement;
-    if (mode === "professional") {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
     document.dispatchEvent(
-      new CustomEvent("theme-change", {
-        detail: { theme: mode === "professional" ? "dark" : "light", mode },
-      })
+      new CustomEvent("mode-change", { detail: { mode } })
     );
   }, [mode]);
-
-  // Enable smooth theme transitions after initial mount (prevents flash on load)
-  useEffect(() => {
-    requestAnimationFrame(() => {
-      document.body.classList.add("theme-ready");
-    });
-  }, []);
 
   const toggle = useCallback(
     (newMode: Mode) => {

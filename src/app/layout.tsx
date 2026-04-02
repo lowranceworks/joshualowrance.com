@@ -39,9 +39,11 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
-                var params = new URLSearchParams(window.location.search);
-                var mode = params.get('mode');
-                if (mode === 'professional') {
+                var theme = localStorage.getItem('theme');
+                if (!theme) {
+                  theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                }
+                if (theme === 'dark') {
                   document.documentElement.classList.add('dark');
                 }
               })();

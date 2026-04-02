@@ -8,22 +8,22 @@ export default function ProfilePhoto() {
   const [hasInitialized, setHasInitialized] = useState(false);
 
   useEffect(() => {
-    // Read initial dark-mode state from the DOM (external system)
-    const isCurrentlyDark =
-      document.documentElement.classList.contains("dark");
+    // Read initial mode from URL params
+    const params = new URLSearchParams(window.location.search);
+    const mode = params.get("mode");
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setFlipped(isCurrentlyDark);
+    setFlipped(mode === "professional");
     // Allow transitions after first paint
     requestAnimationFrame(() => setHasInitialized(true));
   }, []);
 
   useEffect(() => {
-    function onThemeChange(e: Event) {
+    function onModeChange(e: Event) {
       const detail = (e as CustomEvent).detail;
       setFlipped(detail.mode === "professional");
     }
-    document.addEventListener("theme-change", onThemeChange);
-    return () => document.removeEventListener("theme-change", onThemeChange);
+    document.addEventListener("mode-change", onModeChange);
+    return () => document.removeEventListener("mode-change", onModeChange);
   }, []);
 
   return (
