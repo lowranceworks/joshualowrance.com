@@ -12,7 +12,7 @@ export default async function Home({
   searchParams: Promise<{ mode?: string }>;
 }) {
   const { mode: modeParam } = await searchParams;
-  const mode: Mode = modeParam === "professional" ? "professional" : "personal";
+  const mode: Mode = modeParam === "personal" ? "personal" : "professional";
 
   return (
     <div className="flex w-full flex-col gap-y-10">
