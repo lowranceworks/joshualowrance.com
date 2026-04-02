@@ -9,15 +9,13 @@ export default function ModeToggle() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  const [mode, setMode] = useState<Mode>("personal");
+  const [mode, setMode] = useState<Mode>("professional");
 
   useEffect(() => {
     const urlMode = searchParams.get("mode");
-    if (urlMode === "professional" || urlMode === "personal") {
-      // Sync React state from URL params after hydration (external system)
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setMode(urlMode);
-    }
+    // Sync React state from URL params after hydration (external system)
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMode(urlMode === "personal" ? "personal" : "professional");
   }, [searchParams]);
 
   useEffect(() => {
@@ -32,7 +30,7 @@ export default function ModeToggle() {
       const isHome = pathname === "/";
       if (isHome) {
         const params = new URLSearchParams(searchParams.toString());
-        if (newMode === "personal") {
+        if (newMode === "professional") {
           params.delete("mode");
         } else {
           params.set("mode", newMode);
@@ -41,7 +39,7 @@ export default function ModeToggle() {
         router.replace(qs ? `?${qs}` : "/", { scroll: false });
       } else {
         // Navigate home with the selected mode
-        router.push(newMode === "personal" ? "/" : "/?mode=professional");
+        router.push(newMode === "professional" ? "/" : "/?mode=personal");
       }
     },
     [searchParams, router, pathname]

@@ -12,7 +12,7 @@ export default function ProfilePhoto() {
     const params = new URLSearchParams(window.location.search);
     const mode = params.get("mode");
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setFlipped(mode === "professional");
+    setFlipped(mode === "personal");
     // Allow transitions after first paint
     requestAnimationFrame(() => setHasInitialized(true));
   }, []);
@@ -20,7 +20,7 @@ export default function ProfilePhoto() {
   useEffect(() => {
     function onModeChange(e: Event) {
       const detail = (e as CustomEvent).detail;
-      setFlipped(detail.mode === "professional");
+      setFlipped(detail.mode === "personal");
     }
     document.addEventListener("mode-change", onModeChange);
     return () => document.removeEventListener("mode-change", onModeChange);
@@ -63,27 +63,27 @@ export default function ProfilePhoto() {
             transitionDuration: hasInitialized ? "0.6s" : "0s",
           }}
         >
-          {/* Front face — personal */}
+          {/* Front face — professional */}
           <div className="coin-face overflow-hidden rounded-full warm-shadow-lg">
-            <Image
-              src="/images/personal.jpeg"
-              alt="Joshua Lowrance"
-              width={400}
-              height={400}
-              className="h-full w-full object-cover"
-              priority
-            />
-          </div>
-          {/* Back face — professional */}
-          <div className="coin-face overflow-hidden rounded-full warm-shadow-lg"
-            style={{ transform: "rotateY(180deg)" }}
-          >
             <Image
               src="/images/professional.jpeg"
               alt="Joshua Lowrance"
               width={400}
               height={400}
               className="h-full w-full object-cover object-top"
+              priority
+            />
+          </div>
+          {/* Back face — personal */}
+          <div className="coin-face overflow-hidden rounded-full warm-shadow-lg"
+            style={{ transform: "rotateY(180deg)" }}
+          >
+            <Image
+              src="/images/personal.jpeg"
+              alt="Joshua Lowrance"
+              width={400}
+              height={400}
+              className="h-full w-full object-cover"
               priority
             />
           </div>
