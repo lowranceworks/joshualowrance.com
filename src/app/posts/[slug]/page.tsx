@@ -46,7 +46,7 @@ export default async function PostPage({
       </Link>
 
       <header className="flex flex-col gap-y-2">
-        <h1 className="font-cormorant text-4xl font-semibold tracking-wide text-foreground">
+        <h1 className="text-3xl font-semibold tracking-wide text-foreground">
           {post.title}
         </h1>
         <div className="flex items-center gap-x-3 text-sm text-muted-foreground">

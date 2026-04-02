@@ -19,7 +19,7 @@ export default async function Home({
         className="animate-entrance flex flex-col items-center gap-y-4"
       >
         <ProfilePhoto />
-        <h1 className="breathe-glow font-[family-name:var(--font-cormorant-garamond)] text-5xl font-semibold tracking-wide text-foreground">
+        <h1 className="breathe-glow text-5xl font-semibold tracking-wide text-foreground">
           Joshua Lowrance
         </h1>
       </section>

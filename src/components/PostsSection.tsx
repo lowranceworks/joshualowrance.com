@@ -22,7 +22,7 @@ export default function PostsSection({ mode }: PostsSectionProps) {
   return (
     <section className="flex flex-col gap-y-4 md:flex-row md:gap-x-10">
       <div className="md:w-1/5">
-        <h2 className="font-cormorant text-2xl font-semibold text-foreground">
+        <h2 className="text-2xl font-semibold text-foreground">
           Posts
         </h2>
       </div>
@@ -34,7 +34,7 @@ export default function PostsSection({ mode }: PostsSectionProps) {
             className="post-card group flex flex-col gap-y-1"
           >
             <div className="flex items-baseline gap-x-2">
-              <span className="illuminated-link font-garamond text-lg text-foreground">
+              <span className="illuminated-link text-base text-foreground">
                 {post.title}
               </span>
               <span className="text-sm text-muted-foreground">

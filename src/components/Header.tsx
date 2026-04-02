@@ -14,7 +14,7 @@ export default function Header() {
         <div className="z-10 flex flex-1 items-center justify-start pb-8">
           <Link
             href="/"
-            className="font-[family-name:var(--font-cormorant-garamond)] text-[1.25rem] font-medium transition-colors hover:text-gold"
+            className="text-[1.25rem] font-medium transition-colors hover:text-gold"
           >
             Home
           </Link>

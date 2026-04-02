@@ -30,8 +30,7 @@
   --color-gold: var(--gold);
   --color-bronze: var(--bronze);
   --color-border: var(--border);
-  --font-cormorant: var(--font-cormorant-garamond);
-  --font-garamond: var(--font-eb-garamond);
+  --font-mono: var(--font-jetbrains-mono);
   --animate-whirl-slow: whirl 30s linear infinite;
   --animate-whirl-medium: whirl 20s linear infinite reverse;
   --animate-whirl-fast: whirl 12s linear infinite;
@@ -40,7 +39,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-eb-garamond), Georgia, "Times New Roman", serif;
+  font-family: var(--font-jetbrains-mono), "JetBrains Mono", "Fira Code", "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
 }
 
 /* Smooth theme transition — only after JS has initialized to prevent flash on load */
@@ -101,9 +100,9 @@ body::after {
 
 /* Prose styles for markdown content */
 .prose {
-  font-family: var(--font-eb-garamond), Georgia, "Times New Roman", serif;
-  font-size: 1.1rem;
-  line-height: 1.85;
+  font-family: var(--font-jetbrains-mono), "JetBrains Mono", "Fira Code", "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+  font-size: 0.95rem;
+  line-height: 1.75;
   color: var(--foreground);
 }
 
@@ -111,7 +110,7 @@ body::after {
 .prose h2,
 .prose h3,
 .prose h4 {
-  font-family: var(--font-cormorant-garamond), Georgia, serif;
+  font-family: var(--font-jetbrains-mono), "JetBrains Mono", "Fira Code", "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
   font-weight: 600;
   color: var(--foreground);
   margin-top: 2em;
@@ -177,8 +176,7 @@ body::after {
 }
 
 .prose code {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    monospace;
+  font-family: inherit;
   font-size: 0.875em;
   background: var(--border);
   padding: 0.15em 0.4em;
