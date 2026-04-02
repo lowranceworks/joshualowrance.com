@@ -44,6 +44,18 @@ export default function PostsSection({ mode }: PostsSectionProps) {
             <span className="text-sm text-muted-foreground">
               {formatDate(post.date)}
             </span>
+            {post.topics.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 pt-1">
+                {post.topics.map((topic) => (
+                  <span
+                    key={topic}
+                    className="rounded border border-gold/20 px-1.5 py-0.5 text-[0.65rem] text-muted-foreground"
+                  >
+                    {topic}
+                  </span>
+                ))}
+              </div>
+            )}
           </Link>
         ))}
       </div>

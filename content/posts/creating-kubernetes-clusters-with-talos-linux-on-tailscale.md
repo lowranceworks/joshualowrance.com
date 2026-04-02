@@ -3,6 +3,7 @@ title: "Creating Kubernetes Clusters With Talos Linux on Tailscale"
 date: "2026-04-01"
 description: "How I manage multiple Talos Kubernetes clusters across organizations with encrypted configs, Tailscale networking, and a reproducible Git workflow."
 mode: professional
+topics: ["kubernetes", "talos", "tailscale", "homelab", "sops"]
 ---
 
 ## An Operating System You Can't Log Into

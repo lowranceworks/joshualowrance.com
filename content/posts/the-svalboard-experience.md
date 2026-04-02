@@ -3,6 +3,7 @@ title: "The Svalboard Experience"
 date: "2026-04-01"
 description: "How the Svalboard became my daily driver — and retired my mouse for good."
 mode: personal
+topics: ["keyboards", "ergonomics", "svalboard"]
 ---
 
 # The Svalboard Changed How I Think About Typing

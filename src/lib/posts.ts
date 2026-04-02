@@ -13,6 +13,7 @@ export interface PostMeta {
   date: string;
   description?: string;
   mode?: Mode;
+  topics: string[];
   readingTime: string;
 }
 
@@ -33,6 +34,7 @@ function parsePost(filename: string): PostMeta & { content: string } {
     date: data.date ?? "",
     description: data.description,
     mode: data.mode,
+    topics: data.topics ?? [],
     readingTime: stats.text,
     content,
   };
