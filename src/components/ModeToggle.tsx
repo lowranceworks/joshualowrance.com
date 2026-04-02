@@ -1,13 +1,14 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 
 type Mode = "professional" | "personal";
 
 export default function ModeToggle() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const pathname = usePathname();
   const [mode, setMode] = useState<Mode>("personal");
 
   useEffect(() => {
@@ -28,16 +29,22 @@ export default function ModeToggle() {
   const toggle = useCallback(
     (newMode: Mode) => {
       setMode(newMode);
-      const params = new URLSearchParams(searchParams.toString());
-      if (newMode === "personal") {
-        params.delete("mode");
+      const isHome = pathname === "/";
+      if (isHome) {
+        const params = new URLSearchParams(searchParams.toString());
+        if (newMode === "personal") {
+          params.delete("mode");
+        } else {
+          params.set("mode", newMode);
+        }
+        const qs = params.toString();
+        router.replace(qs ? `?${qs}` : "/", { scroll: false });
       } else {
-        params.set("mode", newMode);
+        // Navigate home with the selected mode
+        router.push(newMode === "personal" ? "/" : "/?mode=professional");
       }
-      const qs = params.toString();
-      router.replace(qs ? `?${qs}` : "/", { scroll: false });
     },
-    [searchParams, router]
+    [searchParams, router, pathname]
   );
 
   return (
