@@ -4,11 +4,13 @@ interface AboutSectionProps {
 
 function ProfessionalAbout() {
   return (
-    <p className="text-base leading-relaxed text-foreground">
-      DevOps Engineer building on Kubernetes, GitOps, and Google Cloud. I make
-      infrastructure declarative, deployments boring, and systems that hold up
-      when things go wrong.
-    </p>
+    <div className="flex flex-col gap-y-4 text-base leading-relaxed text-foreground">
+      <p>
+        DevOps Engineer building on Kubernetes and multi-cloud
+        platforms to give teams fast, repeatable, and resilient
+        systems.
+      </p>
+    </div>
   );
 }
 
