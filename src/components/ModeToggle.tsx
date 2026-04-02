@@ -69,24 +69,15 @@ export default function ModeToggle() {
 
       {/* Toggle track */}
       <div
-        className="relative flex h-9 items-center rounded-full border border-gold/30 bg-card"
+        className="flex h-9 items-center gap-0.5 rounded-full border border-gold/30 bg-card p-0.5"
         role="radiogroup"
         aria-label="Site mode"
       >
-        {/* Sliding indicator */}
-        <div
-          className={`absolute top-0.5 bottom-0.5 w-1/2 rounded-full bg-gold/15 transition-transform duration-300 ease-in-out ${
-            mode === "personal"
-              ? "translate-x-[calc(100%-4px)]"
-              : "translate-x-0.5"
-          }`}
-        />
-
         <button
           onClick={() => toggle("professional")}
-          className={`relative z-10 flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+          className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-[0.7rem] font-medium transition-all duration-300 ${
             mode === "professional"
-              ? "text-foreground"
+              ? "bg-gold/15 text-foreground"
               : "text-muted-foreground hover:text-foreground/70"
           }`}
           role="radio"
@@ -98,9 +89,9 @@ export default function ModeToggle() {
 
         <button
           onClick={() => toggle("personal")}
-          className={`relative z-10 flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+          className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-[0.7rem] font-medium transition-all duration-300 ${
             mode === "personal"
-              ? "text-foreground"
+              ? "bg-gold/15 text-foreground"
               : "text-muted-foreground hover:text-foreground/70"
           }`}
           role="radio"
