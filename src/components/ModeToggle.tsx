@@ -5,17 +5,19 @@ import { useSearchParams, useRouter } from "next/navigation";
 
 type Mode = "professional" | "personal";
 
-function modeFromParams(params: URLSearchParams): Mode {
-  const urlMode = params.get("mode");
-  return urlMode === "professional" || urlMode === "personal"
-    ? urlMode
-    : "personal";
-}
-
 export default function ModeToggle() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [mode, setMode] = useState<Mode>(() => modeFromParams(searchParams));
+  const [mode, setMode] = useState<Mode>("personal");
+
+  useEffect(() => {
+    const urlMode = searchParams.get("mode");
+    if (urlMode === "professional" || urlMode === "personal") {
+      // Sync React state from URL params after hydration (external system)
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setMode(urlMode);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     const root = document.documentElement;
