@@ -1,6 +1,8 @@
 import ProfilePhoto from "@/components/ProfilePhoto";
 import AboutSection from "@/components/AboutSection";
 import PostsSection from "@/components/PostsSection";
+import ProjectsSection from "@/components/ProjectsSection";
+import NotesSection from "@/components/NotesSection";
 import Divider from "@/components/Divider";
 import type { Mode } from "@/lib/posts";
 
@@ -39,6 +41,26 @@ export default async function Home({
       <div className="animate-entrance" style={{ animationDelay: "450ms" }}>
         <PostsSection mode={mode} />
       </div>
+
+      {mode === "professional" && (
+        <>
+          <div className="animate-entrance" style={{ animationDelay: "550ms" }}>
+            <Divider />
+          </div>
+
+          <div className="animate-entrance" style={{ animationDelay: "650ms" }}>
+            <ProjectsSection />
+          </div>
+
+          <div className="animate-entrance" style={{ animationDelay: "750ms" }}>
+            <Divider />
+          </div>
+
+          <div className="animate-entrance" style={{ animationDelay: "850ms" }}>
+            <NotesSection />
+          </div>
+        </>
+      )}
     </div>
   );
 }
