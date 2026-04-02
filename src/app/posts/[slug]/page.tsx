@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getPostBySlug, getAllPostSlugs } from "@/lib/posts";
 import PostBody from "./PostBody";
+import ModeHint from "@/components/ModeHint";
 
 export function generateStaticParams() {
   return getAllPostSlugs().map((slug) => ({ slug }));
@@ -36,10 +37,13 @@ export default async function PostPage({
     { day: "numeric", month: "long", year: "numeric" }
   );
 
+  const backHref = post.mode === "personal" ? "/?mode=personal" : "/";
+
   return (
     <article className="flex w-full flex-col gap-y-8">
+      <ModeHint mode={post.mode ?? "professional"} />
       <Link
-        href="/"
+        href={backHref}
         className="illuminated-link text-sm text-muted-foreground"
       >
         &larr; Back

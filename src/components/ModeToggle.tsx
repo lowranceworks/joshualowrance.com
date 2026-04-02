@@ -18,6 +18,18 @@ export default function ModeToggle() {
     setMode(urlMode === "personal" ? "personal" : "professional");
   }, [searchParams]);
 
+  // Listen for mode hints from content pages (posts, etc.)
+  useEffect(() => {
+    function onModeHint(e: Event) {
+      const detail = (e as CustomEvent).detail;
+      if (detail.mode === "personal" || detail.mode === "professional") {
+        setMode(detail.mode);
+      }
+    }
+    document.addEventListener("mode-hint", onModeHint);
+    return () => document.removeEventListener("mode-hint", onModeHint);
+  }, []);
+
   useEffect(() => {
     document.dispatchEvent(
       new CustomEvent("mode-change", { detail: { mode } })
