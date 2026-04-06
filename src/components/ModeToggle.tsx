@@ -1,86 +1,109 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 
 type Mode = "professional" | "personal";
 
 export default function ModeToggle() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [mode, setMode] = useState<Mode>("personal");
+  const pathname = usePathname();
+  const [mode, setMode] = useState<Mode>("professional");
 
   useEffect(() => {
-    const urlMode = searchParams.get("mode");
-    if (urlMode === "professional" || urlMode === "personal") {
-      setMode(urlMode);
+    // On content pages (posts, projects, notes) the ModeHint component
+    // sets a data-content-mode attribute on <html> via an inline script
+    // that runs before React hydrates. This takes priority over the URL
+    // search param so the toggle always reflects the content's mode —
+    // even on a hard refresh where there's no ?mode= param.
+    const contentMode = document.documentElement.getAttribute("data-content-mode");
+    const isHome = pathname === "/";
+
+    if (isHome) {
+      // Navigated back to home — clear any leftover content mode hint
+      document.documentElement.removeAttribute("data-content-mode");
+      const urlMode = searchParams.get("mode");
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setMode(urlMode === "personal" ? "personal" : "professional");
+    } else if (contentMode === "personal" || contentMode === "professional") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setMode(contentMode);
     }
-  }, [searchParams]);
+  }, [searchParams, pathname]);
+
+  // Listen for mode hints from content pages (posts, etc.)
+  // This handles client-side navigations where the data attribute
+  // may be set after ModeToggle has already mounted.
+  useEffect(() => {
+    function onModeHint(e: Event) {
+      const detail = (e as CustomEvent).detail;
+      if (detail.mode === "personal" || detail.mode === "professional") {
+        setMode(detail.mode);
+      }
+    }
+    document.addEventListener("mode-hint", onModeHint);
+    return () => document.removeEventListener("mode-hint", onModeHint);
+  }, []);
 
   useEffect(() => {
-    const root = document.documentElement;
-    if (mode === "professional") {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
     document.dispatchEvent(
-      new CustomEvent("theme-change", {
-        detail: { theme: mode === "professional" ? "dark" : "light", mode },
-      })
+      new CustomEvent("mode-change", { detail: { mode } })
     );
   }, [mode]);
 
   const toggle = useCallback(
     (newMode: Mode) => {
       setMode(newMode);
-      const params = new URLSearchParams(searchParams.toString());
-      if (newMode === "personal") {
-        params.delete("mode");
+      const isHome = pathname === "/";
+      if (isHome) {
+        const params = new URLSearchParams(searchParams.toString());
+        if (newMode === "professional") {
+          params.delete("mode");
+        } else {
+          params.set("mode", newMode);
+        }
+        const qs = params.toString();
+        router.replace(qs ? `?${qs}` : "/", { scroll: false });
       } else {
-        params.set("mode", newMode);
+        // Navigate home with the selected mode
+        router.push(newMode === "professional" ? "/" : "/?mode=personal");
       }
-      const qs = params.toString();
-      router.replace(qs ? `?${qs}` : "/", { scroll: false });
     },
-    [searchParams, router]
+    [searchParams, router, pathname]
   );
 
   return (
     <div className="flex items-center gap-3">
-      {/* Left ornament */}
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        className="hidden text-gold/40 sm:block"
-      >
-        <circle cx="12" cy="12" r="8" stroke="currentColor" strokeWidth="1" />
-        <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="1" />
-        <circle cx="12" cy="12" r="2" fill="currentColor" />
-      </svg>
+      {/* Left ornament — animated */}
+      <div className="hidden h-6 w-6 sm:block">
+        <svg viewBox="0 0 24 24" fill="none" className="h-full w-full text-gold">
+          {/* Outer ring — slow spin */}
+          <g className="origin-center animate-whirl-slow">
+            <circle cx="12" cy="12" r="11" stroke="currentColor" strokeWidth="0.5" opacity="0.3" />
+            <path d="M 12 1 A 11 11 0 0 1 23 12" stroke="currentColor" strokeWidth="1" opacity="0.6" />
+          </g>
+          {/* Inner ring — medium, reverse */}
+          <g className="origin-center animate-whirl-medium">
+            <circle cx="12" cy="12" r="7" stroke="currentColor" strokeWidth="0.5" opacity="0.25" />
+            <path d="M 12 5 A 7 7 0 0 1 19 12" stroke="currentColor" strokeWidth="1" opacity="0.5" />
+          </g>
+          {/* Center dot */}
+          <circle cx="12" cy="12" r="2" fill="currentColor" opacity="0.7" />
+        </svg>
+      </div>
 
       {/* Toggle track */}
       <div
-        className="relative flex h-9 items-center rounded-full border border-gold/30 bg-card"
+        className="flex h-9 items-center gap-0.5 rounded-full border border-gold/30 bg-card p-0.5"
         role="radiogroup"
         aria-label="Site mode"
       >
-        {/* Sliding indicator */}
-        <div
-          className={`absolute top-0.5 bottom-0.5 w-1/2 rounded-full bg-gold/15 transition-transform duration-300 ease-in-out ${
-            mode === "personal"
-              ? "translate-x-[calc(100%-4px)]"
-              : "translate-x-0.5"
-          }`}
-        />
-
         <button
           onClick={() => toggle("professional")}
-          className={`relative z-10 flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+          className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-[0.7rem] font-medium transition-all duration-300 ${
             mode === "professional"
-              ? "text-foreground"
+              ? "bg-gold/15 text-foreground"
               : "text-muted-foreground hover:text-foreground/70"
           }`}
           role="radio"
@@ -92,9 +115,9 @@ export default function ModeToggle() {
 
         <button
           onClick={() => toggle("personal")}
-          className={`relative z-10 flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+          className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-[0.7rem] font-medium transition-all duration-300 ${
             mode === "personal"
-              ? "text-foreground"
+              ? "bg-gold/15 text-foreground"
               : "text-muted-foreground hover:text-foreground/70"
           }`}
           role="radio"
@@ -105,18 +128,23 @@ export default function ModeToggle() {
         </button>
       </div>
 
-      {/* Right ornament */}
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        className="hidden text-gold/40 sm:block"
-      >
-        <circle cx="12" cy="12" r="8" stroke="currentColor" strokeWidth="1" />
-        <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="1" />
-        <circle cx="12" cy="12" r="2" fill="currentColor" />
-      </svg>
+      {/* Right ornament — animated, opposite direction */}
+      <div className="hidden h-6 w-6 sm:block">
+        <svg viewBox="0 0 24 24" fill="none" className="h-full w-full text-gold">
+          {/* Outer ring — slow spin, reversed from left */}
+          <g className="origin-center animate-whirl-medium">
+            <circle cx="12" cy="12" r="11" stroke="currentColor" strokeWidth="0.5" opacity="0.3" />
+            <path d="M 12 23 A 11 11 0 0 1 1 12" stroke="currentColor" strokeWidth="1" opacity="0.6" />
+          </g>
+          {/* Inner ring — fast */}
+          <g className="origin-center animate-whirl-fast">
+            <circle cx="12" cy="12" r="7" stroke="currentColor" strokeWidth="0.5" opacity="0.25" />
+            <path d="M 19 12 A 7 7 0 0 1 12 19" stroke="currentColor" strokeWidth="1" opacity="0.5" />
+          </g>
+          {/* Center dot */}
+          <circle cx="12" cy="12" r="2" fill="currentColor" opacity="0.7" />
+        </svg>
+      </div>
     </div>
   );
 }

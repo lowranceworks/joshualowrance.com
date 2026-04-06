@@ -1,18 +1,11 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, EB_Garamond } from "next/font/google";
+import { JetBrains_Mono } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import "./globals.css";
 
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant-garamond",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
-
-const ebGaramond = EB_Garamond({
-  variable: "--font-eb-garamond",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   display: "swap",
@@ -31,16 +24,19 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${cormorant.variable} ${ebGaramond.variable}`}
+      className={jetbrainsMono.variable}
+      suppressHydrationWarning
     >
       <body className="flex min-h-screen justify-center bg-background scroll-smooth">
         <script
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
-                var params = new URLSearchParams(window.location.search);
-                var mode = params.get('mode');
-                if (mode === 'professional') {
+                var theme = localStorage.getItem('theme');
+                if (!theme) {
+                  theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                }
+                if (theme === 'dark') {
                   document.documentElement.classList.add('dark');
                 }
               })();

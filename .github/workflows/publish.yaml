@@ -1,0 +1,76 @@
+name: Build & Publish
+
+on:
+  push:
+    branches: [main]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE: ghcr.io/lowranceworks/joshualowrance.com
+
+jobs:
+  build:
+    name: Build, Test & Push
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build image
+        run: |
+          docker build \
+            -f Containerfile \
+            -t ${{ env.IMAGE }}:${{ github.sha }} \
+            -t ${{ env.IMAGE }}:latest \
+            .
+
+      - name: Smoke test container
+        run: |
+          docker run -d \
+            --name joshualowrance-com \
+            -p 3000:3000 \
+            --memory=256m \
+            --cpus=0.5 \
+            ${{ env.IMAGE }}:${{ github.sha }}
+
+          # Wait for container to be ready
+          echo "Waiting for container to start..."
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:3000 > /dev/null 2>&1; then
+              echo "Container is healthy"
+              break
+            fi
+            if [ "$i" = "30" ]; then
+              echo "Container failed to start"
+              docker logs joshualowrance-com
+              exit 1
+            fi
+            sleep 2
+          done
+
+          # Verify response
+          STATUS=$(curl -o /dev/null -s -w '%{http_code}' http://localhost:3000)
+          if [ "$STATUS" != "200" ]; then
+            echo "Health check failed with status $STATUS"
+            docker logs joshualowrance-com
+            exit 1
+          fi
+
+          echo "Smoke test passed"
+          docker stop joshualowrance-com
+          docker rm joshualowrance-com
+
+      - name: Push image
+        run: |
+          docker push ${{ env.IMAGE }}:${{ github.sha }}
+          docker push ${{ env.IMAGE }}:latest

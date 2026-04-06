@@ -1,5 +1,7 @@
 import { Suspense } from "react";
+import Link from "next/link";
 import ModeToggle from "./ModeToggle";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Header() {
   return (
@@ -10,12 +12,12 @@ export default function Header() {
       >
         {/* Left */}
         <div className="z-10 flex flex-1 items-center justify-start pb-8">
-          <a
+          <Link
             href="/"
-            className="font-[family-name:var(--font-cormorant-garamond)] text-[1.25rem] font-medium transition-colors hover:text-gold"
+            className="text-[1.25rem] font-medium transition-colors hover:text-gold"
           >
             Home
-          </a>
+          </Link>
         </div>
 
         {/* Center */}
@@ -26,7 +28,9 @@ export default function Header() {
         </div>
 
         {/* Right */}
-        <div className="z-10 flex flex-1 flex-row items-center justify-end gap-x-6 pb-8 sm:gap-x-8" />
+        <div className="z-10 flex flex-1 flex-row items-center justify-end gap-x-6 pb-8 sm:gap-x-8">
+          <ThemeToggle />
+        </div>
       </nav>
     </header>
   );
