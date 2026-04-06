@@ -20,7 +20,7 @@ jobs:
       - uses: actions/checkout@v5
 
       - name: Log in to GHCR
-        uses: redhat-actions/podman-login@v1
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -28,19 +28,20 @@ jobs:
 
       - name: Build image
         run: |
-          podman build \
+          docker build \
             -f Containerfile \
             -t ${{ env.IMAGE }}:${{ github.sha }} \
             -t ${{ env.IMAGE }}:latest \
             .
 
-      - name: Test with podman play kube
+      - name: Smoke test container
         run: |
-          # Swap image tag to the just-built SHA
-          sed "s|image:.*|image: ${{ env.IMAGE }}:${{ github.sha }}|" \
-            test/pod.yaml > /tmp/pod-test.yaml
-
-          podman play kube /tmp/pod-test.yaml
+          docker run -d \
+            --name joshualowrance-com \
+            -p 3000:3000 \
+            --memory=256m \
+            --cpus=0.5 \
+            ${{ env.IMAGE }}:${{ github.sha }}
 
           # Wait for container to be ready
           echo "Waiting for container to start..."
@@ -51,7 +52,7 @@ jobs:
             fi
             if [ "$i" = "30" ]; then
               echo "Container failed to start"
-              podman pod logs joshualowrance-com
+              docker logs joshualowrance-com
               exit 1
             fi
             sleep 2
@@ -61,14 +62,15 @@ jobs:
           STATUS=$(curl -o /dev/null -s -w '%{http_code}' http://localhost:3000)
           if [ "$STATUS" != "200" ]; then
             echo "Health check failed with status $STATUS"
-            podman pod logs joshualowrance-com
+            docker logs joshualowrance-com
             exit 1
           fi
 
-          echo "Pod test passed"
-          podman play kube --down /tmp/pod-test.yaml
+          echo "Smoke test passed"
+          docker stop joshualowrance-com
+          docker rm joshualowrance-com
 
       - name: Push image
         run: |
-          podman push ${{ env.IMAGE }}:${{ github.sha }}
-          podman push ${{ env.IMAGE }}:latest
+          docker push ${{ env.IMAGE }}:${{ github.sha }}
+          docker push ${{ env.IMAGE }}:latest
